@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlogAppService.Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace BlogAppService.Domain.Entities
 {
-    public class Relish //Like
+    public class Relish : BaseEntity //Like
     {
-        public string Id { get; set; }
-        public int MyProperty { get; set; }
+        public string User { get; set; }
     }
 }

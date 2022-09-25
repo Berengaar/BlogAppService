@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlogAppService.Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace BlogAppService.Domain.Entities
 {
-    public class Article
+    public class Article : BaseEntity
     {
-        public string Id { get; set; }
         public string CategoryId { get; set; }
         public Category Category { get; set; }
         public string Title { get; set; }
