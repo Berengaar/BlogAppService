@@ -1,5 +1,6 @@
 ﻿using BlogAppService.Application.Common.Repositories;
 using BlogAppService.Domain.Common;
+using BlogAppService.Infrastructure.Persistance.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,21 +13,22 @@ namespace BlogAppService.Infrastructure.Persistance.Repositories
 {
     public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity
     {
-        public DbSet<T> Table => throw new NotImplementedException();
+        private readonly BlogAppServicePostgreSqlDbContext _context;
 
-        public Task<T> FindAsync(Expression<Func<T, bool>> predicate)
+        public ReadRepository(BlogAppServicePostgreSqlDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<IList<T>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public DbSet<T> Table => _context.Set<T>();
 
-        public Task<IList<T>> GetWhereAsync(Expression<Func<T, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<T> FindAsync(Expression<Func<T, bool>> predicate) => await Table.FirstOrDefaultAsync(predicate);
+
+
+        public async Task<IList<T>> GetAllAsync() => await Table.ToListAsync();
+
+
+        public async Task<IList<T>> GetWhereAsync(Expression<Func<T, bool>> predicate) => await Table.Where(predicate).ToListAsync();
+
     }
 }

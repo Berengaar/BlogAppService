@@ -1,5 +1,6 @@
 ﻿using BlogAppService.Application.Common.Repositories;
 using BlogAppService.Domain.Common;
+using BlogAppService.Infrastructure.Persistance.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,21 +12,34 @@ namespace BlogAppService.Infrastructure.Persistance.Repositories
 {
     public class WriteRepository<T> : IWriteRepository<T> where T : BaseEntity
     {
-        public DbSet<T> Table => throw new NotImplementedException();
+        private readonly BlogAppServicePostgreSqlDbContext _context;
 
-        public Task<bool> AddAsync(T entity)
+        public WriteRepository(BlogAppServicePostgreSqlDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<bool> DeleteAsync(T entity)
+        public DbSet<T> Table => _context.Set<T>();
+
+        public async Task<bool> AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            await Table.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<bool> UpdateAsync(T entity)
+        public async Task<bool> DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+            await Task.Run(() => Table.Remove(entity));
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdateAsync(T entity)
+        {
+            await Task.Run(() => Table.Update(entity));
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }
