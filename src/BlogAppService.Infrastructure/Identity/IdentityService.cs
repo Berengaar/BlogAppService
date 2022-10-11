@@ -75,9 +75,34 @@ namespace BlogAppService.Infrastructure.Identity
             else return Result.Failure(new string[] { "" });
         }
 
-        public Task<Result> RegisterAsync(RegisterModel registerModel, string role = "User")
+        public async Task<Result> RegisterAsync(RegisterModel registerModel, string role = "User")
         {
-            throw new NotImplementedException();
+            var userExists = await _userManager.FindByEmailAsync(registerModel.Email);
+            if (userExists == null)
+            {
+                AppUser user = new()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    FirstName = registerModel.FirstName,
+                    LastName = registerModel.LastName,
+                    Email = registerModel.Email,
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    UserName = $"{registerModel.FirstName} {registerModel.LastName}",
+                };
+                var result = await _userManager.CreateAsync(user, registerModel.Password);
+                if (result.Succeeded)
+                {
+                    await CreateRole(role);
+                    await _userManager.AddToRoleAsync(user, role.ToString());
+                    return Result.Success();
+                }
+                else
+                {
+                    string errors = System.Text.Json.JsonSerializer.Serialize(result.Errors);
+                    return Result.Failure(new string[] { errors });
+                }
+            }
+            else return Result.Failure(new string[] { "" });
         }
         private async Task CreateRole(string role)
         {
@@ -85,7 +110,7 @@ namespace BlogAppService.Infrastructure.Identity
             bool roleControl = await _roleManager.RoleExistsAsync(strRole);
             if (!roleControl)
             {
-                await _roleManager.CreateAsync(new AppRole { Name = strRole });
+                await _roleManager.CreateAsync(new AppRole { Id=Guid.NewGuid().ToString(),Name = strRole });
             }
         }
         private JwtSecurityToken GetToken(List<Claim> authClaims)
