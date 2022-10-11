@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BlogAppService.Infrastructure.Migrations
 {
-    public partial class migcreateDb : Migration
+    public partial class mig_createAgain : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

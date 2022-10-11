@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlogAppService.Infrastructure.Migrations
 {
     [DbContext(typeof(BlogAppServicePostgreSqlDbContext))]
-    [Migration("20221007160554_mig-createDb")]
-    partial class migcreateDb
+    [Migration("20221011223544_mig_createAgain")]
+    partial class mig_createAgain
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
