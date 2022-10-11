@@ -1,8 +1,10 @@
 ﻿using BlogAppService.Application.Common.Interfaces;
+using BlogAppService.Domain.Common;
 using BlogAppService.Domain.Entities;
 using BlogAppService.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +23,15 @@ namespace BlogAppService.Infrastructure.Persistance.Contexts
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Relish> Relishes { get; set; }
+        public override ValueTask<EntityEntry<TEntity>> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
+        {
+            var datas = ChangeTracker.Entries<BaseEntity>();
+
+            foreach (var data in datas)
+            {
+                data.Entity.Id = Guid.NewGuid().ToString();
+            }
+            return base.AddAsync(entity, cancellationToken);
+        }
     }
 }
