@@ -1,4 +1,5 @@
 using BlogAppService.Infrastructure.Persistance;
+using BlogAppService.Infrastructure.Persistance.DIContainer;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -11,6 +12,7 @@ builder.Services.AddSwaggerGen();
 
 //DbRegister
 builder.Services.AddDbServices(configuration);
+builder.Services.AddDIServices();
 
 var app = builder.Build();
 
