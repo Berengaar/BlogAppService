@@ -56,27 +56,7 @@ namespace BlogAppService.Infrastructure.Migrations
                     b.ToTable("Articles");
                 });
 
-            modelBuilder.Entity("BlogAppService.Domain.Entities.Category", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("BlogAppService.Domain.Entities.Comment", b =>
+            modelBuilder.Entity("BlogAppService.Domain.Entities.ArticleComment", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -99,10 +79,60 @@ namespace BlogAppService.Infrastructure.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("ArticleComment");
                 });
 
-            modelBuilder.Entity("BlogAppService.Domain.Entities.Relish", b =>
+            modelBuilder.Entity("BlogAppService.Domain.Entities.ArticleCommentRelish", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ArticleCommentId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("RelishEnums")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleCommentId");
+
+                    b.ToTable("ArticleCommentRelishes");
+                });
+
+            modelBuilder.Entity("BlogAppService.Domain.Entities.ArticleRelish", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ArticleId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("RelishEnums")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.ToTable("ArticleRelishes");
+                });
+
+            modelBuilder.Entity("BlogAppService.Domain.Entities.Category", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -110,16 +140,16 @@ namespace BlogAppService.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("User")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Relishes");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("BlogAppService.Infrastructure.Identity.AppRole", b =>
@@ -337,10 +367,32 @@ namespace BlogAppService.Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("BlogAppService.Domain.Entities.Comment", b =>
+            modelBuilder.Entity("BlogAppService.Domain.Entities.ArticleComment", b =>
                 {
                     b.HasOne("BlogAppService.Domain.Entities.Article", "Article")
                         .WithMany("Comments")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+                });
+
+            modelBuilder.Entity("BlogAppService.Domain.Entities.ArticleCommentRelish", b =>
+                {
+                    b.HasOne("BlogAppService.Domain.Entities.ArticleComment", "ArticleComment")
+                        .WithMany("Relishes")
+                        .HasForeignKey("ArticleCommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ArticleComment");
+                });
+
+            modelBuilder.Entity("BlogAppService.Domain.Entities.ArticleRelish", b =>
+                {
+                    b.HasOne("BlogAppService.Domain.Entities.Article", "Article")
+                        .WithMany("Relish")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -402,6 +454,13 @@ namespace BlogAppService.Infrastructure.Migrations
             modelBuilder.Entity("BlogAppService.Domain.Entities.Article", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Relish");
+                });
+
+            modelBuilder.Entity("BlogAppService.Domain.Entities.ArticleComment", b =>
+                {
+                    b.Navigation("Relishes");
                 });
 
             modelBuilder.Entity("BlogAppService.Domain.Entities.Category", b =>

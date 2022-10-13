@@ -20,9 +20,10 @@ namespace BlogAppService.Infrastructure.Persistance.Contexts
 
         }
         public DbSet<Article> Articles { get; set; }
-        public DbSet<Comment> Comments { get; set; }
+        public DbSet<ArticleRelish> ArticleRelishes { get; set; }
+        public DbSet<ArticleComment> ArticleComment { get; set; }
+        public DbSet<ArticleCommentRelish> ArticleCommentRelishes { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Relish> Relishes { get; set; }
         public override ValueTask<EntityEntry<TEntity>> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
         {
             var datas = ChangeTracker.Entries<BaseEntity>();

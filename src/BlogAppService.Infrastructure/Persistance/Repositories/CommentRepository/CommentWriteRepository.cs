@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlogAppService.Infrastructure.Persistance.Repositories.CommentRepository
 {
-    public class CommentWriteRepository : WriteRepository<Comment>, ICommentWriteRepository
+    public class CommentWriteRepository : WriteRepository<ArticleComment>, ICommentWriteRepository
     {
         public CommentWriteRepository(BlogAppServicePostgreSqlDbContext context) : base(context)
         {

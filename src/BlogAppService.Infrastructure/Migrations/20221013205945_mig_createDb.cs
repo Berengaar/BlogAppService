@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BlogAppService.Infrastructure.Migrations
 {
-    public partial class mig_createAgain : Migration
+    public partial class mig_createDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -63,20 +63,6 @@ namespace BlogAppService.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Relishes",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    User = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Relishes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -209,7 +195,7 @@ namespace BlogAppService.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
+                name: "ArticleComment",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
@@ -220,14 +206,71 @@ namespace BlogAppService.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.PrimaryKey("PK_ArticleComment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_Articles_ArticleId",
+                        name: "FK_ArticleComment_Articles_ArticleId",
                         column: x => x.ArticleId,
                         principalTable: "Articles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "ArticleRelishes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    ArticleId = table.Column<string>(type: "text", nullable: false),
+                    RelishEnums = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArticleRelishes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ArticleRelishes_Articles_ArticleId",
+                        column: x => x.ArticleId,
+                        principalTable: "Articles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ArticleCommentRelishes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    ArticleCommentId = table.Column<string>(type: "text", nullable: false),
+                    RelishEnums = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArticleCommentRelishes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ArticleCommentRelishes_ArticleComment_ArticleCommentId",
+                        column: x => x.ArticleCommentId,
+                        principalTable: "ArticleComment",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ArticleComment_ArticleId",
+                table: "ArticleComment",
+                column: "ArticleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ArticleCommentRelishes_ArticleCommentId",
+                table: "ArticleCommentRelishes",
+                column: "ArticleCommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ArticleRelishes_ArticleId",
+                table: "ArticleRelishes",
+                column: "ArticleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Articles_CategoryId",
@@ -270,15 +313,16 @@ namespace BlogAppService.Infrastructure.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_ArticleId",
-                table: "Comments",
-                column: "ArticleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ArticleCommentRelishes");
+
+            migrationBuilder.DropTable(
+                name: "ArticleRelishes");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -295,10 +339,7 @@ namespace BlogAppService.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Comments");
-
-            migrationBuilder.DropTable(
-                name: "Relishes");
+                name: "ArticleComment");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

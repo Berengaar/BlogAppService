@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BlogAppService.Application.Common.Repositories.CommentRepository
 {
-    public interface ICommentWriteRepository : IWriteRepository<Comment>
+    public interface ICommentWriteRepository : IWriteRepository<ArticleComment>
     {
     }
 }

@@ -14,6 +14,7 @@ namespace BlogAppService.Domain.Entities
         public string Title { get; set; }
         public string Content { get; set; }
         public string ImagePath { get; set; }
-        public IList<Comment> Comments { get; set; }
+        public IList<ArticleComment> Comments { get; set; }
+        public IList<ArticleRelish> Relish { get; set; }
     }
 }

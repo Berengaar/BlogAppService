@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BlogAppService.Application.Common.Repositories.RelishRepository
 {
-    public interface IRelishWriteRepository : IWriteRepository<Relish>
+    public interface IRelishWriteRepository : IWriteRepository<ArticleRelish>
     {
     }
 }

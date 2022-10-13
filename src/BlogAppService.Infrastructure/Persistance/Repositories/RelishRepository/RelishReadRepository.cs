@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlogAppService.Infrastructure.Persistance.Repositories.RelishRepository
 {
-    public class RelishReadRepository : ReadRepository<Relish>, IRelishReadRepository
+    public class RelishReadRepository : ReadRepository<ArticleRelish>, IRelishReadRepository
     {
         public RelishReadRepository(BlogAppServicePostgreSqlDbContext context) : base(context)
         {
