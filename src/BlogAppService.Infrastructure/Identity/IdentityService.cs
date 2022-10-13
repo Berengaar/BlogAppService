@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -41,6 +42,9 @@ namespace BlogAppService.Infrastructure.Identity
                     authClaims.Add(new Claim(ClaimTypes.Role, userRole));
                 }
                 var token = GetToken(authClaims);
+
+                var login = new UserLoginInfo(token, "", "");
+                await _userManager.AddLoginAsync(user, login);
 
                 return (Result.Success(), token.ToString());
             }
@@ -113,7 +117,7 @@ namespace BlogAppService.Infrastructure.Identity
                 await _roleManager.CreateAsync(new AppRole { Id=Guid.NewGuid().ToString(),Name = strRole });
             }
         }
-        private JwtSecurityToken GetToken(List<Claim> authClaims)
+        private string GetToken(List<Claim> authClaims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
@@ -124,7 +128,7 @@ namespace BlogAppService.Infrastructure.Identity
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
-            return token;
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

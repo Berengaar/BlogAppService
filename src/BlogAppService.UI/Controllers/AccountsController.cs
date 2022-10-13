@@ -38,8 +38,7 @@ namespace BlogAppService.UI.Controllers
             var result = await _identityService.LoginAsync(user);
             if (result.Item1.Succeeded)
             {
-                Response.Headers.Add("JWT", result.token);
-                return Ok();
+                return Ok(result.token);
             }
             else
             {
