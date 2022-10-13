@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlogAppService.Application.Common.Repositories.CommentRepository
+namespace BlogAppService.Application.Common.Repositories.ArticleCommentRepository
 {
-    public interface ICommentWriteRepository : IWriteRepository<ArticleComment>
+    public interface IArticleCommentWriteRepository : IWriteRepository<ArticleComment>
     {
     }
 }

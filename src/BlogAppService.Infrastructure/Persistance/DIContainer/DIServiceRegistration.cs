@@ -1,12 +1,12 @@
 ﻿using BlogAppService.Application.Common.Interfaces;
 using BlogAppService.Application.Common.Repositories.ArticleRepository;
 using BlogAppService.Application.Common.Repositories.CategoryRepository;
-using BlogAppService.Application.Common.Repositories.CommentRepository;
+using BlogAppService.Application.Common.Repositories.ArticleCommentRepository;
 using BlogAppService.Application.Common.Repositories.RelishRepository;
 using BlogAppService.Infrastructure.Identity;
 using BlogAppService.Infrastructure.Persistance.Repositories.ArticleRepository;
 using BlogAppService.Infrastructure.Persistance.Repositories.CategoryRepository;
-using BlogAppService.Infrastructure.Persistance.Repositories.CommentRepository;
+using BlogAppService.Infrastructure.Persistance.Repositories.ArticleCommentRepository;
 using BlogAppService.Infrastructure.Persistance.Repositories.RelishRepository;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -23,8 +23,8 @@ namespace BlogAppService.Infrastructure.Persistance.DIContainer
         {
             services.AddScoped<ICategoryReadRepository, CategoryReadRepository>();
             services.AddScoped<ICategoryWriteRepository, CategoryWriteRepository>();
-            services.AddScoped<ICommentReadRepository, CommentReadRepository>();
-            services.AddScoped<ICommentWriteRepository, CommentWriteRepository>();
+            services.AddScoped<IArticleCommentReadRepository, ArticleCommentReadRepository>();
+            services.AddScoped<IArticleCommentWriteRepository, ArticleCommentWriteRepository>();
             services.AddScoped<IRelishReadRepository, RelishReadRepository>();
             services.AddScoped<IRelishWriteRepository, RelishWriteRepository>();
             services.AddScoped<IArticleReadRepository, ArticleReadRepository>();
