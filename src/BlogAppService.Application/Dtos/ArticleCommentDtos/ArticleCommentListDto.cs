@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace BlogAppService.Application.Dtos.ArticleCommentDtos
 {
-    public class DeleteArticleCommentDto
+    public class ArticleCommentListDto
     {
-        public string Id { get; set; }
+        public IList<ArticleCommentDto> ArticleCommentDtos { get; set; }
     }
 }
