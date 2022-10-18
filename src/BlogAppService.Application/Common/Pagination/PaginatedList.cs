@@ -26,11 +26,11 @@ namespace BlogAppService.Application.Common.Pagination
             AddRange(items);
         }
 
-        public static List<T> ToPagedList(IQueryable<T> source, int pageNumber, int pageSize)
+        public static List<T> ToPagedList(IQueryable<T> source, PaginatedParameters paginatedParameters)
         {
             var x = source.Count();
-            var items = source.Skip((pageNumber - 1) / pageSize)
-                .Take(pageSize)
+            var items = source.Skip((paginatedParameters.PageNumber - 1) / paginatedParameters.PageSize)
+                .Take(paginatedParameters.PageSize)
                 .ToList();
             return new List<T>(items);
         }
