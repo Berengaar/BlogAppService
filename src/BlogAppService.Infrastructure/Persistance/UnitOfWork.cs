@@ -19,12 +19,8 @@ namespace BlogAppService.Infrastructure.Persistance
         private ArticleWriteRepository _articleWriteRepository;
         private ArticleCommentReadRepository _articleCommentReadRepository;
         private ArticleCommentWriteRepository _articleCommentWriteRepository;
-        public UnitOfWork(ArticleReadRepository articleReadRepository, ArticleWriteRepository articleWriteRepository, ArticleCommentReadRepository articleCommentReadRepository, ArticleCommentWriteRepository articleCommentWriteRepository, BlogAppServicePostgreSqlDbContext context)
+        public UnitOfWork(BlogAppServicePostgreSqlDbContext context)
         {
-            _articleReadRepository = articleReadRepository;
-            _articleWriteRepository = articleWriteRepository;
-            _articleCommentReadRepository = articleCommentReadRepository;
-            _articleCommentWriteRepository = articleCommentWriteRepository;
             _context = context;
         }
         public IArticleReadRepository ArticleReadRepository => _articleReadRepository ?? (_articleReadRepository = new ArticleReadRepository(_context));
