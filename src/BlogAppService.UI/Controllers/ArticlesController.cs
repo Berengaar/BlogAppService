@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BlogAppService.Application.Common.Interfaces;
 using BlogAppService.Application.Dtos.ArticleDtos;
+using BlogAppService.Application.Dtos.Category;
 using BlogAppService.Domain.Consts;
 using BlogAppService.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -22,35 +23,94 @@ namespace BlogAppService.UI.Controllers
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
-        [HttpGet("all")]
-        public async Task<IActionResult> GetArticles()
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllAsync()
         {
-            return Ok("Get çağrıldı");
+            var articleList = await _unitOfWork.ArticleReadRepository.GetAllAsync();
+            if (articleList != null)
+            {
+                var articles = _mapper.Map<ArticleListDto>(articleList);
+                if (articles != null)
+                {
+                    return Ok(articles);
+                }
+                return NoContent();
+            }
+            return BadRequest();
         }
-        [HttpPost]
-        public async Task<IActionResult> AddAsync(AddArticleDto articleDto)
+
+        [HttpGet("{categoryId}")]
+        public async Task<IActionResult> GetAllByCategoryIdAsync(string categoryId)
         {
-            if (articleDto == null) return BadRequest("Article boş geldi");
-            var article = _mapper.Map<Article>(articleDto);
+            var articleList = await _unitOfWork.ArticleReadRepository.GetWhereAsync(x => x.CategoryId == categoryId);
+            if (articleList != null)
+            {
+                var articles = _mapper.Map<ArticleListDto>(articleList);
+                if (articleList != null)
+                {
+                    return Ok(articles);
+                }
+                return NoContent();
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAsync(string id)
+        {
+            var article = await _unitOfWork.ArticleReadRepository.FindAsync(x => x.Id == id);
             if (article != null)
             {
-                await _unitOfWork.ArticleWriteRepository.AddAsync(article);
-                return Ok("Article başarıyla eklendi");
+                var mappedArticle = _mapper.Map<ArticleDto>(article);
+                if (mappedArticle != null)
+                {
+                    return Ok(mappedArticle);
+                }
+                return NoContent();
             }
-            return BadRequest("Article map edilirken hata oluştu");
+            return BadRequest();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddAsync(AddArticleDto addArticleDto)
+        {
+            var identityModel = await _unitOfWork.IdentityHelperService.GetIdentityModel(User.Identity.Name);
+            var article = _mapper.Map<Article>(addArticleDto);
+            if (article != null)
+            {
+                article.AppUserId = identityModel.Id;
+                var result = await _unitOfWork.ArticleWriteRepository.AddAsync(article);
+                if (result)
+                {
+                    return StatusCode(201);
+                }
+                return StatusCode(501);
+            }
+            return BadRequest();
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(UpdateArticleDto articleDto)
+        public async Task<IActionResult> UpdateAsync(UpdateArticleDto updateArticleDto)
         {
-            if (articleDto == null) return BadRequest("Article boş geldi");
-            var article = _mapper.Map<Article>(articleDto);
+            var identityModel = await _unitOfWork.IdentityHelperService.GetIdentityModel(User.Identity.Name);
+            var article = _mapper.Map<Article>(updateArticleDto);
             if (article != null)
             {
-                await _unitOfWork.ArticleWriteRepository.UpdateAsync(article);
-                return Ok("Article başarıyla eklendi");
+                var isExist = await _unitOfWork.ArticleReadRepository.FindAsync(x => x.Id == updateArticleDto.Id);
+                var isUserControl = await _unitOfWork.ArticleReadRepository.FindAsync(x => x.AppUserId == identityModel.Id && x.Id==updateArticleDto.Id);
+
+                if (isExist != null && isUserControl != null)
+                {
+                    var result = await _unitOfWork.ArticleWriteRepository.UpdateAsync(article);
+                    if (result)
+                    {
+                        return Ok();
+                    }
+                    return StatusCode(501);
+                }
+                return NoContent();
             }
-            return BadRequest("Article map edilirken hata oluştu");
+            return BadRequest();
         }
     }
 }

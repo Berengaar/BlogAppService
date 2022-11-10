@@ -8,5 +8,7 @@ namespace BlogAppService.Application.Dtos.ArticleCommentDtos
 {
     public class AddArticleCommentDto : ArticleCommentDto
     {
+        public string Content { get; set; }
+        public string ArticleId { get; set; }
     }
 }

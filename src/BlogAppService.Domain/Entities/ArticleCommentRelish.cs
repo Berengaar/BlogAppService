@@ -9,6 +9,8 @@ namespace BlogAppService.Domain.Entities
 {
     public class ArticleCommentRelish : BaseEntity
     {
+        public AppUser AppUser { get; set; }
+        public string AppUserId { get; set; }
         public string ArticleCommentId { get; set; }
         public ArticleComment ArticleComment { get; set; }
         public RelishEnums RelishEnums { get; set; }

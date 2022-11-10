@@ -1,12 +1,14 @@
 using BlogAppService.Infrastructure.Persistance;
 using BlogAppService.Infrastructure.Persistance.DIContainer;
-using System.Reflection;
+using BlogAppService.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 // Add services to the container.
 
-builder.Services.AddControllers();
+//Application Services
+builder.Services.AddApplicationServices();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -15,8 +17,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbServices(configuration);
 builder.Services.AddDIServices();
 
-// Automapper
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 

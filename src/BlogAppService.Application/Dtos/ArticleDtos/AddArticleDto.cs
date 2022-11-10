@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace BlogAppService.Application.Dtos.ArticleDtos
 {
-    public class AddArticleDto : ArticleDto
+    public class AddArticleDto 
     {
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string ImagePath { get; set; }
+        public string CategoryId { get; set; }
     }
 }

@@ -29,6 +29,7 @@ namespace BlogAppService.Infrastructure.Persistance.DIContainer
             services.AddScoped<IRelishWriteRepository, RelishWriteRepository>();
             services.AddScoped<IArticleReadRepository, ArticleReadRepository>();
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IIdentityHelperService, IdentityHelperService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }

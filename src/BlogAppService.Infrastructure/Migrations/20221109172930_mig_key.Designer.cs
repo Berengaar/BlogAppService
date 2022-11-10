@@ -3,6 +3,7 @@ using System;
 using BlogAppService.Infrastructure.Persistance.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlogAppService.Infrastructure.Migrations
 {
     [DbContext(typeof(BlogAppServicePostgreSqlDbContext))]
-    partial class BlogAppServicePostgreSqlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221109172930_mig_key")]
+    partial class mig_key
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

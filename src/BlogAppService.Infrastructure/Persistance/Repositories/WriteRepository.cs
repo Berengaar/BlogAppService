@@ -2,6 +2,7 @@
 using BlogAppService.Domain.Common;
 using BlogAppService.Infrastructure.Persistance.Contexts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace BlogAppService.Infrastructure.Persistance.Repositories
 
         public async Task<bool> UpdateAsync(T entity)
         {
-            await Task.Run(() => Table.Update(entity));
+            EntityEntry<T> entityEntry = await Task.Run(() => Table.Update(entity));
             await _context.SaveChangesAsync();
             return true;
         }

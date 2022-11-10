@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlogAppService.Infrastructure.Identity
+namespace BlogAppService.Domain.Entities
 {
     public class AppRole:IdentityRole<string>
     {

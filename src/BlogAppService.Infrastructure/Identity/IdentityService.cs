@@ -1,6 +1,7 @@
 ﻿using BlogAppService.Application.Common.Interfaces;
 using BlogAppService.Application.Models.Identity;
 using BlogAppService.Application.Models.ResultType;
+using BlogAppService.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

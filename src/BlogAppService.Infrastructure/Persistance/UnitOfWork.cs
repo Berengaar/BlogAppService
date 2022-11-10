@@ -1,9 +1,12 @@
 ﻿using BlogAppService.Application.Common.Interfaces;
 using BlogAppService.Application.Common.Repositories.ArticleCommentRepository;
 using BlogAppService.Application.Common.Repositories.ArticleRepository;
+using BlogAppService.Application.Common.Repositories.CategoryRepository;
+using BlogAppService.Infrastructure.Identity;
 using BlogAppService.Infrastructure.Persistance.Contexts;
 using BlogAppService.Infrastructure.Persistance.Repositories.ArticleCommentRepository;
 using BlogAppService.Infrastructure.Persistance.Repositories.ArticleRepository;
+using BlogAppService.Infrastructure.Persistance.Repositories.CategoryRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +22,9 @@ namespace BlogAppService.Infrastructure.Persistance
         private ArticleWriteRepository _articleWriteRepository;
         private ArticleCommentReadRepository _articleCommentReadRepository;
         private ArticleCommentWriteRepository _articleCommentWriteRepository;
+        private CategoryReadRepository _categoryReadRepository;
+        private CategoryWriteRepository _categoryWriteRepository;
+        private IdentityHelperService _identityHelper;
         public UnitOfWork(BlogAppServicePostgreSqlDbContext context)
         {
             _context = context;
@@ -30,5 +36,11 @@ namespace BlogAppService.Infrastructure.Persistance
         public IArticleCommentReadRepository ArticleCommentReadRepository => _articleCommentReadRepository ?? (_articleCommentReadRepository = new ArticleCommentReadRepository(_context));
 
         public IArticleCommentWriteRepository ArticleCommentWriteRepository => _articleCommentWriteRepository ?? (_articleCommentWriteRepository = new ArticleCommentWriteRepository(_context));
+
+        public IIdentityHelperService IdentityHelperService => _identityHelper ?? (_identityHelper = new IdentityHelperService(_context));
+
+        public ICategoryReadRepository CategoryReadRepository => _categoryReadRepository ?? (_categoryReadRepository = new CategoryReadRepository(_context));
+
+        public ICategoryWriteRepository CategoryWriteRepository => _categoryWriteRepository ?? (_categoryWriteRepository = new CategoryWriteRepository(_context));
     }
 }

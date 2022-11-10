@@ -22,13 +22,13 @@ namespace BlogAppService.Infrastructure.Persistance.Repositories
 
         public DbSet<T> Table => _context.Set<T>();
 
-        public async Task<T> FindAsync(Expression<Func<T, bool>> predicate) => await Table.FirstOrDefaultAsync(predicate);
+        public async Task<T> FindAsync(Expression<Func<T, bool>> predicate) => await Table.AsNoTracking().FirstOrDefaultAsync(predicate);
 
 
-        public async Task<IList<T>> GetAllAsync() => await Table.ToListAsync();
+        public async Task<IList<T>> GetAllAsync() => await Table.AsNoTracking().ToListAsync();
 
 
-        public async Task<IList<T>> GetWhereAsync(Expression<Func<T, bool>> predicate) => await Table.Where(predicate).ToListAsync();
+        public async Task<IList<T>> GetWhereAsync(Expression<Func<T, bool>> predicate) => await Table.AsNoTracking().Where(predicate).ToListAsync();
 
     }
 }

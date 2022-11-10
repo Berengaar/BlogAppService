@@ -15,6 +15,7 @@ namespace BlogAppService.Application.Mapping
         {
             CreateMap<AddArticleDto, Article>().ReverseMap();
             CreateMap<UpdateArticleDto, Article>().ReverseMap();
+            CreateMap<ArticleDto, Article>().ReverseMap();
         }
     }
 }

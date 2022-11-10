@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace BlogAppService.Infrastructure.Persistance.Repositories.ArticleRepository
 {
     public class ArticleReadRepository : ReadRepository<Article>, IArticleReadRepository
-    {,
+    {
         private readonly BlogAppServicePostgreSqlDbContext _context;
         public ArticleReadRepository(BlogAppServicePostgreSqlDbContext context) : base(context) => _context = context;
 

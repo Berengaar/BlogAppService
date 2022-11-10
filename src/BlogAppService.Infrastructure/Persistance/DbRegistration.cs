@@ -1,4 +1,5 @@
-﻿using BlogAppService.Infrastructure.Identity;
+﻿using BlogAppService.Domain.Entities;
+using BlogAppService.Infrastructure.Identity;
 using BlogAppService.Infrastructure.Persistance.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
