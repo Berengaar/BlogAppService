@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlogAppService.Infrastructure.Persistance.Repositories.RelishRepository
+namespace BlogAppService.Infrastructure.Persistance.Repositories.ArticleRelishRepository
 {
-    public class RelishWriteRepository : WriteRepository<ArticleRelish>, IRelishWriteRepository
+    public class ArticleRelishWriteRepository : WriteRepository<ArticleRelish>, IArticleRelishWriteRepository
     {
-        public RelishWriteRepository(BlogAppServicePostgreSqlDbContext context) : base(context)
+        public ArticleRelishWriteRepository(BlogAppServicePostgreSqlDbContext context) : base(context)
         {
         }
     }

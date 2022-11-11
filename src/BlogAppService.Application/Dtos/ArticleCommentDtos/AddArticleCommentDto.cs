@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BlogAppService.Application.Dtos.ArticleCommentDtos
 {
-    public class AddArticleCommentDto : ArticleCommentDto
+    public class AddArticleCommentDto
     {
-        public string Content { get; set; }
         public string ArticleId { get; set; }
+        public string Content { get; set; }
     }
 }

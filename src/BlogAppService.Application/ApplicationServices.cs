@@ -14,7 +14,9 @@ namespace BlogAppService.Application
     {
         public static void AddApplicationServices(this IServiceCollection services)
         {
-            services.AddControllers().AddFluentValidation(opt => opt.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+            services.AddControllers().AddJsonOptions(options =>
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles).AddFluentValidation(opt => opt.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
     }

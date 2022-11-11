@@ -2,9 +2,11 @@
 using BlogAppService.Application.Common.Repositories.ArticleCommentRepository;
 using BlogAppService.Application.Common.Repositories.ArticleRepository;
 using BlogAppService.Application.Common.Repositories.CategoryRepository;
+using BlogAppService.Application.Common.Repositories.RelishRepository;
 using BlogAppService.Infrastructure.Identity;
 using BlogAppService.Infrastructure.Persistance.Contexts;
 using BlogAppService.Infrastructure.Persistance.Repositories.ArticleCommentRepository;
+using BlogAppService.Infrastructure.Persistance.Repositories.ArticleRelishRepository;
 using BlogAppService.Infrastructure.Persistance.Repositories.ArticleRepository;
 using BlogAppService.Infrastructure.Persistance.Repositories.CategoryRepository;
 using System;
@@ -22,6 +24,8 @@ namespace BlogAppService.Infrastructure.Persistance
         private ArticleWriteRepository _articleWriteRepository;
         private ArticleCommentReadRepository _articleCommentReadRepository;
         private ArticleCommentWriteRepository _articleCommentWriteRepository;
+        private ArticleRelishReadRepository _articleRelishReadRepository;
+        private ArticleRelishWriteRepository _articleRelishWriteRepository;
         private CategoryReadRepository _categoryReadRepository;
         private CategoryWriteRepository _categoryWriteRepository;
         private IdentityHelperService _identityHelper;
@@ -37,10 +41,14 @@ namespace BlogAppService.Infrastructure.Persistance
 
         public IArticleCommentWriteRepository ArticleCommentWriteRepository => _articleCommentWriteRepository ?? (_articleCommentWriteRepository = new ArticleCommentWriteRepository(_context));
 
-        public IIdentityHelperService IdentityHelperService => _identityHelper ?? (_identityHelper = new IdentityHelperService(_context));
-
         public ICategoryReadRepository CategoryReadRepository => _categoryReadRepository ?? (_categoryReadRepository = new CategoryReadRepository(_context));
 
         public ICategoryWriteRepository CategoryWriteRepository => _categoryWriteRepository ?? (_categoryWriteRepository = new CategoryWriteRepository(_context));
+
+        public IArticleRelishReadRepository ArticleRelishReadRepository => _articleRelishReadRepository ?? (_articleRelishReadRepository = new ArticleRelishReadRepository(_context));
+
+        public IArticleRelishWriteRepository ArticleRelishWriteRepository => _articleRelishWriteRepository ?? (_articleRelishWriteRepository = new ArticleRelishWriteRepository(_context));
+        public IIdentityHelperService IdentityHelperService => _identityHelper ?? (_identityHelper = new IdentityHelperService(_context));
+
     }
 }

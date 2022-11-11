@@ -3,6 +3,7 @@ using System;
 using BlogAppService.Infrastructure.Persistance.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlogAppService.Infrastructure.Migrations
 {
     [DbContext(typeof(BlogAppServicePostgreSqlDbContext))]
-    partial class BlogAppServicePostgreSqlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221110141726_mig_relishStatus")]
+    partial class mig_relishStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,7 +128,6 @@ namespace BlogAppService.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("AppUserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("CategoryId")
@@ -204,7 +205,7 @@ namespace BlogAppService.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("RelishStatus")
+                    b.Property<int>("RelishEnums")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedDate")
@@ -380,9 +381,7 @@ namespace BlogAppService.Infrastructure.Migrations
                 {
                     b.HasOne("BlogAppService.Domain.Entities.AppUser", "AppUser")
                         .WithMany("Articles")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AppUserId");
 
                     b.HasOne("BlogAppService.Domain.Entities.Category", "Category")
                         .WithMany("Articles")
@@ -421,7 +420,7 @@ namespace BlogAppService.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("BlogAppService.Domain.Entities.ArticleComment", "ArticleComment")
-                        .WithMany("ArticleCommentRelishes")
+                        .WithMany("Relishes")
                         .HasForeignKey("ArticleCommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -519,7 +518,7 @@ namespace BlogAppService.Infrastructure.Migrations
 
             modelBuilder.Entity("BlogAppService.Domain.Entities.ArticleComment", b =>
                 {
-                    b.Navigation("ArticleCommentRelishes");
+                    b.Navigation("Relishes");
                 });
 
             modelBuilder.Entity("BlogAppService.Domain.Entities.Category", b =>

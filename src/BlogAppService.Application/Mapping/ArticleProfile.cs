@@ -13,9 +13,11 @@ namespace BlogAppService.Application.Mapping
     {
         public ArticleProfile()
         {
-            CreateMap<AddArticleDto, Article>().ReverseMap();
-            CreateMap<UpdateArticleDto, Article>().ReverseMap();
-            CreateMap<ArticleDto, Article>().ReverseMap();
+            CreateMap<Article, AddArticleDto>().ReverseMap();
+            CreateMap<Article, UpdateArticleDto>().ReverseMap();
+            CreateMap<Article, ArticleDto>()
+                .ForMember(dest => dest.UserName, act => act.MapFrom(src => src.AppUser.UserName))
+                .ReverseMap();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlogAppService.Application.Dtos.ArticleCommentRelishDtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,8 @@ namespace BlogAppService.Application.Dtos.ArticleCommentDtos
 {
     public class ArticleCommentDto
     {
-        public string ArticleId { get; set; }
         public string Content { get; set; }
+        public string UserName { get; set; }
+        public IList<ArticleCommentRelishDto> ArticleCommentRelishes { get; set; }
     }
 }

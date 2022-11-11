@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BlogAppService.Application.Common.Interfaces;
+using BlogAppService.Application.Common.Pagination;
 using BlogAppService.Application.Dtos.ArticleDtos;
 using BlogAppService.Application.Dtos.Category;
 using BlogAppService.Domain.Consts;
@@ -12,7 +13,7 @@ namespace BlogAppService.UI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = UserRoles.User)]
+    //[Authorize(Roles = UserRoles.User)]
     public class ArticlesController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -24,30 +25,14 @@ namespace BlogAppService.UI.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        [HttpPost("all")]
+        public async Task<IActionResult> GetAllAsync(PaginatedParameters paginatedParameters)
         {
-            var articleList = await _unitOfWork.ArticleReadRepository.GetAllAsync();
+            var articleList = await _unitOfWork.ArticleReadRepository.GetAllWithPaginationAsync(paginatedParameters, includeProperties: x => x.AppUser);
             if (articleList != null)
             {
-                var articles = _mapper.Map<ArticleListDto>(articleList);
+                var articles = _mapper.Map<List<ArticleDto>>(articleList);
                 if (articles != null)
-                {
-                    return Ok(articles);
-                }
-                return NoContent();
-            }
-            return BadRequest();
-        }
-
-        [HttpGet("{categoryId}")]
-        public async Task<IActionResult> GetAllByCategoryIdAsync(string categoryId)
-        {
-            var articleList = await _unitOfWork.ArticleReadRepository.GetWhereAsync(x => x.CategoryId == categoryId);
-            if (articleList != null)
-            {
-                var articles = _mapper.Map<ArticleListDto>(articleList);
-                if (articleList != null)
                 {
                     return Ok(articles);
                 }
@@ -59,7 +44,7 @@ namespace BlogAppService.UI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(string id)
         {
-            var article = await _unitOfWork.ArticleReadRepository.FindAsync(x => x.Id == id);
+            var article = await _unitOfWork.ArticleReadRepository.FindAsync(x => x.Id == id, x => x.AppUser);
             if (article != null)
             {
                 var mappedArticle = _mapper.Map<ArticleDto>(article);
@@ -71,6 +56,39 @@ namespace BlogAppService.UI.Controllers
             }
             return BadRequest();
         }
+
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetArticlesByUserId(string userId)
+        {
+            var articleList = await _unitOfWork.ArticleReadRepository.GetWhereAsync(x => x.AppUserId == userId);
+            if (articleList != null)
+            {
+                var articles = _mapper.Map<List<ArticleDto>>(articleList);
+                if (articleList != null)
+                {
+                    return Ok(articles);
+                }
+                return NoContent();
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("category/{categoryId}")]
+        public async Task<IActionResult> GetAllByCategoryIdAsync(string categoryId)
+        {
+            var articleList = await _unitOfWork.ArticleReadRepository.GetWhereAsync(x => x.CategoryId == categoryId);
+            if (articleList != null)
+            {
+                var articles = _mapper.Map<List<ArticleDto>>(articleList);
+                if (articleList != null)
+                {
+                    return Ok(articles);
+                }
+                return NoContent();
+            }
+            return BadRequest();
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddAsync(AddArticleDto addArticleDto)
         {
@@ -97,10 +115,11 @@ namespace BlogAppService.UI.Controllers
             if (article != null)
             {
                 var isExist = await _unitOfWork.ArticleReadRepository.FindAsync(x => x.Id == updateArticleDto.Id);
-                var isUserControl = await _unitOfWork.ArticleReadRepository.FindAsync(x => x.AppUserId == identityModel.Id && x.Id==updateArticleDto.Id);
+                var isUserControl = await _unitOfWork.ArticleReadRepository.FindAsync(x => x.AppUserId == identityModel.Id && x.Id == updateArticleDto.Id);
 
                 if (isExist != null && isUserControl != null)
                 {
+                    article.AppUserId = identityModel.Id;
                     var result = await _unitOfWork.ArticleWriteRepository.UpdateAsync(article);
                     if (result)
                     {

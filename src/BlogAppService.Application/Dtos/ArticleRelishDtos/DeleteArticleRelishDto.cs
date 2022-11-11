@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlogAppService.Application.Dtos.ArticleCommentDtos
+namespace BlogAppService.Application.Dtos.ArticleRelishDtos
 {
-    public class UpdateArticleCommentDto
+    public class DeleteArticleRelishDto
     {
         public string Id { get; set; }
-        public string Content { get; set; }
     }
 }

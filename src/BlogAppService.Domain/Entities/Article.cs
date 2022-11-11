@@ -14,9 +14,9 @@ namespace BlogAppService.Domain.Entities
         public string? Title { get; set; }
         public string? Content { get; set; }
         public string? ImagePath { get; set; }
-        public AppUser? AppUser { get; set; }
-        public string? AppUserId { get; set; }
-        public IList<ArticleComment>? Comments { get; set; }
-        public IList<ArticleRelish>? Relish { get; set; }
+        public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
+        public IList<ArticleComment>? ArticleComments { get; set; }
+        public IList<ArticleRelish>? ArticleRelishes { get; set; }
     }
 }

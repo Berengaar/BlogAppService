@@ -11,7 +11,7 @@ namespace BlogAppService.Application.Common.Repositories
     public interface IReadRepository<T> : IRepository<T> where T : BaseEntity
     {
         Task<IList<T>> GetAllAsync();
-        Task<IList<T>> GetWhereAsync(Expression<Func<T, bool>> predicate);
-        Task<T> FindAsync(Expression<Func<T, bool>> predicate);
+        Task<IList<T>> GetWhereAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
+        Task<T> FindAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
     }
 }

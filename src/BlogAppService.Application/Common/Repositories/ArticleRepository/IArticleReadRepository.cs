@@ -11,6 +11,6 @@ namespace BlogAppService.Application.Common.Repositories.ArticleRepository
 {
     public interface IArticleReadRepository : IReadRepository<Article>
     {
-        Task<IList<Article>> GetAllWithPaginationAsync(Expression<Func<Article, bool>> predicate,PaginatedParameters paginatedParameters);
+        Task<IList<Article>> GetAllWithPaginationAsync(PaginatedParameters paginatedParameters, Expression<Func<Article, bool>> predicate = null, params Expression<Func<Article, object>>[] includeProperties);
     }
 }
